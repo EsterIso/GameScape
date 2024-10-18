@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Portal Dashboard</title>
+    <link rel="stylesheet" href="/resources/css/styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Game Portal</h1>
+            <button class="play-now-btn">Play Now</button>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon" id="games-icon"></div>
+                <div class="stat-content">
+                    <p class="stat-label">Total Games</p>
+                    <p class="stat-value" id="total-games">12</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" id="active-players-icon"></div>
+                <div class="stat-content">
+                    <p class="stat-label">Active Players</p>
+                    <p class="stat-value" id="active-players">1,234</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" id="total-players-icon"></div>
+                <div class="stat-content">
+                    <p class="stat-label">Total Players</p>
+                    <p class="stat-value" id="total-players">5,678</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" id="avg-rating-icon"></div>
+                <div class="stat-content">
+                    <p class="stat-label">Avg Rating</p>
+                    <p class="stat-value" id="avg-rating">4.5</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Player Activity Chart -->
+        <div class="chart-card">
+            <h2>Player Activity</h2>
+            <canvas id="player-activity-chart"></canvas>
+        </div>
+
+        <!-- Popular Games -->
+        <div class="popular-games">
+            <h2>Popular Games</h2>
+            <div class="games-grid" id="games-grid">
+                <!-- Game cards will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
