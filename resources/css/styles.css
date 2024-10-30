@@ -56,27 +56,26 @@ header.dark-mode {
     
 }
 
-.theme-toggle {
-    background-color: #8b5cf6;
-    background-position: center;
-    padding: 10px 20px;
-    border-radius: 10px;
-    background-repeat: no-repeat;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.play-now-btn {
+.play-now-btn, .theme-toggle, #sign-in-button{
     background-color: #8b5cf6;
     color: white;
     padding: 10px 20px;
     border-radius: 10px;
     border: none;
+    background-repeat: no-repeat;
+    background-position: center;
     font-size: medium;
     cursor: pointer;
     margin-right: 10px;
     transition: background-color 0.3s ease;
+}
+
+#user-button {
+    background-color: #8b5cf6;
+    border-radius: 20px;
+    border: none;
+    background-position: center;
+    padding: 5px 5px;
 }
 
 .play-now-btn:hover, .theme-toggle:hover{
