@@ -78,7 +78,7 @@ header.dark-mode {
     padding: 5px 5px;
 }
 
-.play-now-btn:hover, .theme-toggle:hover{
+.play-now-btn:hover, .theme-toggle:hover, #user-button:hover{
     background-color: #7c3aed;
 }
 
