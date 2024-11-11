@@ -12,26 +12,28 @@
     ></script>
 </head>
 <body>
-    <header>
-        <h1>GameScape</h1>
-        <div class="header-btn" id="app">
-            <button class="home" onclick="window.location.href='../index.html'">Home</button>
-            <button class="theme-toggle" id="theme"></button>
-            <button id="sign-in-button">Sign In</button> 
-            <div id="user-button"></div>
+    <div class="dashboard">
+        <header>
+            <h1>GameScape</h1>
+            <div class="header-btn" id="app">
+                <button class="home" onclick="window.location.href='../index.html'">Home</button>
+                <button class="theme-toggle" id="theme"></button>
+                <button id="sign-in-button">Sign In</button> 
+                <div id="user-button"></div>
+            </div>
+        </header>
+        <div class="game-container">
+            <div class="stats">
+                <div>Moves: <span id="moves">0</span></div>
+                <div>Matches: <span id="matches">0</span></div>
+                <button id="resetGame" onclick="resetGame()">Reset Game</button>
+            </div>
+            <div class="game-grid" id="gameGrid"></div>
         </div>
-    </header>
-    <div class="game-container">
-        <div class="stats">
-            <div>Moves: <span id="moves">0</span></div>
-            <div>Matches: <span id="matches">0</span></div>
-            <button id="resetGame" onclick="resetGame()">Reset Game</button>
-        </div>
-        <div class="game-grid" id="gameGrid"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+        <script type="module" src='/resources/js/script.js'></script>
+        <script src='/resources/js/clerk.js'></script>
+        <script src='/resources/js/memory.js'></script>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <script type="module" src='/resources/js/script.js'></script>
-    <script src='/resources/js/clerk.js'></script>
-    <script src='/resources/js/memory.js'></script>
 </body>
 </html>

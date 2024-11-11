@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
   const header = document.querySelector('header');
   const statCards = document.querySelectorAll('.stat-card');
+  const gameCards = document.querySelectorAll('.game-card');
 
   if (toggleButton) {  // Check if theme toggle button exists
     // Check for saved theme preference
@@ -18,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
       statCards.forEach(card => {
         card.classList.toggle('dark-mode', isDarkMode);
       });
+      gameCards.forEach(card => {
+        card.classList.toggle('dark-mode', isDarkMode);
+      });
       updateClerkAppearance();
     }
 
@@ -26,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const isDarkMode = body.classList.toggle('dark-mode');
       header.classList.toggle('dark-mode', isDarkMode);
       statCards.forEach(card => {
+        card.classList.toggle('dark-mode', isDarkMode);
+      });
+      gameCards.forEach(card => {
         card.classList.toggle('dark-mode', isDarkMode);
       });
       localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');

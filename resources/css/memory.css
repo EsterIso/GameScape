@@ -82,7 +82,7 @@ header.dark-mode {
 #theme {background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1lY2xpcHNlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwYXRoIGQ9Ik0xMiAyYTcgNyAwIDEgMCAxMCAxMCIvPjwvc3ZnPg==');}
 
 .game-container {
-    width: clamp(300px, 80%, 600px); /* Min 300px, flexible up to 90% of viewport, max 600px */
+    width: clamp(100px, 40%, 600px); /* Min 300px, flexible up to 90% of viewport, max 600px */
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
@@ -141,15 +141,4 @@ header.dark-mode {
     color: white;
     border-color: #27ae60;
     transition: background-color 0.5s ease;
-}
-
-
-
-@media (max-width: 640px) {
-    .game-container {
-        padding: 10px; /* Reduce padding on smaller screens */
-    }
-    .game-grid {
-        grid-template-columns: repeat(2, 1fr); /* Adjust columns for smaller screens */
-    }
 }
