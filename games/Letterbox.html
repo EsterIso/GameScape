@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="/resources/css/letterbox.css">
+    <!-- Load Clerk SDK from CDN -->
+    <script
+    async
+    crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_Y2hhbXBpb24tc2FpbGZpc2gtODAuY2xlcmsuYWNjb3VudHMuZGV2JA"
+    src="https://capable-seasnail-95.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+    type="text/javascript"
+    ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <header>
+        <h1>GameScape</h1>
+        <div class="header-btn" id="app">
+            <button class="home" onclick="window.location.href='../index.html'">Home</button>
+            <button class="theme-toggle" id="theme"></button>
+            <button id="sign-in-button">Sign In</button> 
+            <div id="user-button"></div>
+        </div>
+    </header>
+    <div class="game-title" >
+        <div class="title-animation">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMTAwIj4KICA8IS0tIEJhY2tncm91bmQgc3F1YXJlcyB0byByZXByZXNlbnQgbGV0dGVyIGJveGVzIGZvciBMRVRURVIgLS0+CiAgPHJlY3QgeD0iMjUiIHk9IjIwIiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiM0QTkwRTIiIHJ4PSI1Ii8+CiAgPHJlY3QgeD0iODUiIHk9IjIwIiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNFMjRBNEEiIHJ4PSI1Ii8+CiAgPHJlY3QgeD0iMTQ1IiB5PSIyMCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjNEFFMjRBIiByeD0iNSIvPgogIDxyZWN0IHg9IjIwNSIgeT0iMjAiIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgZmlsbD0iI0UyRTI0QSIgcng9IjUiLz4KICA8cmVjdCB4PSIyNjUiIHk9IjIwIiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiM5QTRBRTIiIHJ4PSI1Ii8+CiAgPHJlY3QgeD0iMzI1IiB5PSIyMCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjNEE5MEUyIiByeD0iNSIvPgogIAogIDwhLS0gQmFja2dyb3VuZCBzcXVhcmVzIGZvciBCT1ggLSBjZW50ZXJlZCBhbmQgYmlnZ2VyIC0tPgogIDxyZWN0IHg9IjEzNSIgeT0iNjUiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI0UyNEE0QSIgcng9IjUiLz4KICA8cmVjdCB4PSIxODAiIHk9IjY1IiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIGZpbGw9IiM0QUUyNEEiIHJ4PSI1Ii8+CiAgPHJlY3QgeD0iMjI1IiB5PSI2NSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjRTJFMjRBIiByeD0iNSIvPgogIAogIDwhLS0gTGV0dGVycyBmb3IgTEVUVEVSIC0tPgogIDx0ZXh0IHg9IjUwIiB5PSI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPkw8L3RleHQ+CiAgPHRleHQgeD0iMTEwIiB5PSI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPkU8L3RleHQ+CiAgPHRleHQgeD0iMTcwIiB5PSI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlQ8L3RleHQ+CiAgPHRleHQgeD0iMjMwIiB5PSI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlQ8L3RleHQ+CiAgPHRleHQgeD0iMjkwIiB5PSI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPkU8L3RleHQ+CiAgPHRleHQgeD0iMzUwIiB5PSI1NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlI8L3RleHQ+CiAgCiAgPCEtLSBMZXR0ZXJzIGZvciBCT1ggLSBhZGp1c3RlZCBmb3IgbmV3IGJveCBwb3NpdGlvbnMgLS0+CiAgPHRleHQgeD0iMTU1IiB5PSI5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPkI8L3RleHQ+CiAgPHRleHQgeD0iMjAwIiB5PSI5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPk88L3RleHQ+CiAgPHRleHQgeD0iMjQ1IiB5PSI5MiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlg8L3RleHQ+Cjwvc3ZnPg==" alt="SVG Image" />  
+        </div>
+    </div>
+    <div class="game-container">
+        
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script type="module" src='/resources/js/script.js'></script>
+    <script src='/resources/js/clerk.js'></script>
+    <script src='/resources/js/letterbox.js'></script>
+</body>
+</html>

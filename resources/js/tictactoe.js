@@ -7,29 +7,16 @@ let gameActive = false;
 // DOM Elements
 const playerButton = document.querySelector('.player');
 const cpuButton = document.querySelector('.cpu');
-const themeToggle = document.querySelector('.theme-toggle');
 const gameContainer = document.querySelector('.game-container');
 
 // Create game board UI
 function createGameBoard() {
     const board = document.createElement('div');
-    board.style.display = 'grid';
-    board.style.gridTemplateColumns = 'repeat(3, 1fr)';
-    board.style.gap = '10px';
-    board.style.width = 'clamp(400px, 50%, 800px)';
-    board.style.marginTop = '20px';
+    board.classList.add('game-board'); // Add class to board
 
     for (let i = 0; i < 9; i++) {
         const cell = document.createElement('div');
-        cell.style.backgroundColor = '#8b5cf6';
-        cell.style.aspectRatio = '1';
-        cell.style.display = 'flex';
-        cell.style.alignItems = 'center';
-        cell.style.justifyContent = 'center';
-        cell.style.fontSize = '2em';
-        cell.style.color = 'white';
-        cell.style.cursor = 'pointer';
-        cell.style.borderRadius = '10px';
+        cell.classList.add('game-cell'); // Add class to cell
         cell.dataset.index = i;
         cell.addEventListener('click', () => handleCellClick(i));
         board.appendChild(cell);
@@ -37,6 +24,7 @@ function createGameBoard() {
 
     return board;
 }
+
 
 // Reset game
 function resetGame() {

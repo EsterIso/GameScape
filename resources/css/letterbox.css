@@ -83,7 +83,7 @@ header.dark-mode {
 #game-title {background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMTAwIj4KICAKICAKICA8IS0tIE1haW4gdGV4dCB3aXRoIGZ1biBzdHlsaW5nIC0tPgogIDx0ZXh0IHg9IjIwMCIgeT0iNjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI0OCIgZm9udC13ZWlnaHQ9ImJvbGQiPgogICAgPHRzcGFuIGZpbGw9IiM0QTkwRTIiPlRJQzwvdHNwYW4+CiAgICA8dHNwYW4gZmlsbD0iI0UyNEE0QSI+VEFDPC90c3Bhbj4KICAgIDx0c3BhbiBmaWxsPSIjNEFFMjRBIj5UT0U8L3RzcGFuPgogIDwvdGV4dD4KICAKPC9zdmc+');}
 
 .game-container {
-    width: clamp(300px, 80%, 600px); /* Min 300px, flexible up to 90% of viewport, max 600px */
+    width:  clamp(300px, 80%, 600px);/* Min 300px, flexible up to 90% of viewport, max 600px */
     margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
@@ -93,15 +93,18 @@ header.dark-mode {
     flex-direction: column;
 }
 
-.tictactoe {
-    width: 80%;
+.game-title {
+    width: clamp(300px, 80%, 600px);;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
 }
 
 .title-animation{
     width: 80%;
+    height: auto;
     background-color: #483D8B;
     position: relative;
     border-radius: 10px;
@@ -142,89 +145,11 @@ header.dark-mode {
     }
 }
 
-.buttons{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-}
-
-.player, .cpu {
-    background-color: #8b5cf6;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: none;
-    background-repeat: no-repeat;
-    background-position: center;
-    font-size: medium;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    position: relative;
-    overflow: hidden; 
-}
-
-.player-animation{
-    margin: 13px 0; 
-}
-
-.cpu-animation {
-    margin: 5px 0; 
-  }
-
-.player-animation:hover,
-.cpu-animation:hover{
-    position: relative;
-}
-
-
-.player-animation:hover::before,
-.player-animation:hover::after,
-.cpu-animation:hover::before,
-.cpu-animation:hover::after {
-    content: '';
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 50%;
-    left: 50%;
-    padding: 3px;
-    transform: translate(-50%, -50%);
-    border-radius: 10px;
-    background-image: conic-gradient(from var(--angle), #f43e39, #47f141, #417bf1, #e567db, #f43e39);
-    z-index: -1;
-    animation: spin 3s linear infinite;
-    pointer-events: none;
-}
-
-
-.player-animation:hover::before,
-.cpu-animation:hover::before {
-    filter: blur(1.5rem);
-    opacity: 0.5;
-}
-
-@keyframes spin {
-    from {
-        --angle: 0deg;
-    }
-    to {
-        --angle: 360deg;
-    }
-}
-
-.card {
-    aspect-ratio: 3/4;
-    position: relative;
-    transition: transform 0.5s;
-    cursor: pointer;
-}
 /* CSS for the game board */
 .game-board {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
     width: clamp(400px, 50%, 800px);
     margin-top: 20px;
 }
@@ -240,4 +165,40 @@ header.dark-mode {
     color: white;
     cursor: pointer;
     border-radius: 10px;
+    margin-bottom: 6px;
+}
+
+.keyboard {
+    width: clamp(300px, 80%, 600px);
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.keyboard-key {
+    background-color: #8b5cf6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 15px;
+    min-width: 50px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.keyboard-key[data-key="enter"],  .keyboard-key[data-key="del"]{
+    min-width: 70px;
+}
+
+.keyboard-key:hover {
+    background-color: #7c3aed;
 }
