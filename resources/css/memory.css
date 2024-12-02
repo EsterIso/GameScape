@@ -10,18 +10,20 @@ body {
     background-color: white;
     transition: background-color 0.3s ease, color 0.3s ease;
     color: var(--text-color, black);
-    /* #1c173a */
+    min-height: 100vh;
+    width: 100%;
 }
 
 body.dark-mode {
     background-color: #171331;
     --text-color: white;
-  }
+}
 
-.dashboard{
+.dashboard {
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-height: 100vh;
 }
 
 header {
@@ -29,15 +31,14 @@ header {
     width: 100%;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
-    margin-bottom: 15px;
+    padding: 10px;
+    margin-bottom: 10px;
     background-color: #ececec;
     transition: background-color 0.3s ease, color 0.3s ease;
     color: #8b5cf6;
-    /* #483D8B */
-    text-shadow: 0 0 10px rgba(166, 127, 255, .8), /* Outer glow */
+    text-shadow: 0 0 10px rgba(166, 127, 255, .8),
                0 0 20px rgba(166, 127, 255, .6),
-               0 0 40px rgba(166, 127, 255, .4), 
+               0 0 40px rgba(166, 127, 255, .4),
                0 0 80px rgba(166, 127, 255, .2);
 }
 
@@ -46,25 +47,24 @@ header.dark-mode {
     color: #ececec;
 }
 
-.header-btn{
+.header-btn {
     display: flex;
-    padding: 0 10px;
-    justify-content: space-between;
-    
+    padding: 0 5px;
+    gap: 5px;
 }
 
-.home, .theme-toggle, #sign-in-button, #resetGame{
+.home, .theme-toggle, #sign-in-button, #resetGame {
     background-color: #8b5cf6;
     color: white;
-    padding: 10px 20px;
-    border-radius: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
     border: none;
     background-repeat: no-repeat;
     background-position: center;
-    font-size: medium;
+    font-size: 14px;
     cursor: pointer;
-    margin-right: 10px;
     transition: background-color 0.3s ease;
+    background-size: auto;
 }
 
 #user-button {
@@ -72,32 +72,36 @@ header.dark-mode {
     border-radius: 20px;
     border: none;
     background-position: center;
-    padding: 5px 5px;
+    padding: 5px;
 }
 
-.home:hover, .theme-toggle:hover, #user-button:hover, #resetGame:hover{
+.home:hover, .theme-toggle:hover, #user-button:hover, #resetGame:hover {
     background-color: #7c3aed;
 }
 
-#theme {background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1lY2xpcHNlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwYXRoIGQ9Ik0xMiAyYTcgNyAwIDEgMCAxMCAxMCIvPjwvc3ZnPg==');}
+#theme {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1lY2xpcHNlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwYXRoIGQ9Ik0xMiAyYTcgNyAwIDEgMCAxMCAxMCIvPjwvc3ZnPg==');
+}
 
 .game-container {
-    width: clamp(200px, 80%, 600px); /* Min 300px, flexible up to 90% of viewport, max 600px */
+    width: min(95%, 600px);
     margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    padding: 10px;
 }
 
 .stats {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .game-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: clamp(4px, 1vw, 10px);
+    width: 100%;
 }
 
 .card {
@@ -106,6 +110,7 @@ header.dark-mode {
     transform-style: preserve-3d;
     transition: transform 0.5s;
     cursor: pointer;
+    width: 100%;
 }
 
 .card.flipped {
@@ -120,7 +125,7 @@ header.dark-mode {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4em;
+    font-size: clamp(3rem, 7vw, 6.5rem);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
@@ -137,26 +142,42 @@ header.dark-mode {
 }
 
 .card.matched .card-back {
-    background: #7be380;  
+    background: #7be380;
     color: white;
     border-color: #27ae60;
     transition: background-color 0.5s ease;
 }
 
-
-
-@media (max-width: 768px) {
-    .game-grid {
-        grid-template-columns: repeat(4, 1fr);
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+    .home, .theme-toggle, #sign-in-button, #resetGame {
+        padding: 6px 12px;
+        font-size: 12px;
+        background-size: 80% 80%;
     }
+
+    .game-container {
+        padding: 5px;
+    }
+
+    .game-grid {
+        gap: 4px;
+    }
+
+  
 }
 
-@media (max-width: 576px) {
-    .game-grid {
-        grid-template-columns: repeat(4, 1fr);
+/* Landscape orientation adjustments */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+    .game-container {
+        padding: 5px;
     }
-    .card {
-        min-width: 80px;
-        max-width: 120px;
+    
+    .game-grid {
+        gap: 4px;
+    }
+    
+    .card-front, .card-back {
+        font-size: clamp(2.8rem, 5vw, 4.5rem);
     }
 }
