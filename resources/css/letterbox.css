@@ -223,3 +223,34 @@ header.dark-mode {
 .keyboard-key:hover {
     background-color: #7c3aed;
 }
+
+.notification {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #8b5cf6;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
+    text-align: center;
+    max-width: 90%;
+    word-wrap: break-word;
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+/* Different types of notifications */
+.notification.error {
+    background-color: #ef4444;
+}
+
+.notification.success {
+    background-color: #50c62e;
+}

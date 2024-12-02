@@ -1,20 +1,48 @@
+import { initializeWordList, getRandomWord, WORDS } from "./words.js";
+
 // Game state variables
 const WORD_LENGTH = 5;
 const guesses = 6;
-let currentRow = 0;  // Track which row we're on
-let currentCol = 0;  // Track which column we're on
+let currentRow = 0;
+let currentCol = 0;
 let currentGuess = [];
-const rightGuessString = "WORLD"; // Example word
-const WORDS = ["WORLD", "HELLO", "GAMES"]; // Example word list
+let rightGuessString;
 
-// Create and append game board when DOM loads
-document.addEventListener('DOMContentLoaded', () => {
-    const gameContainer = document.querySelector('.game-container');
-    const board = createGameBoard();
-    const keyboard = createKeyboard();
-    gameContainer.appendChild(board);
-    gameContainer.appendChild(keyboard);
-});
+// Initialize game
+async function initGame() {
+    try {
+        // Show loading message
+        const gameContainer = document.querySelector('.game-container');
+        const loadingMsg = document.createElement('div');
+        loadingMsg.textContent = 'Loading word list...';
+        loadingMsg.style.marginBottom = '20px';
+        gameContainer.appendChild(loadingMsg);
+
+        // Initialize word list
+        await initializeWordList();
+        
+        // Remove loading message
+        loadingMsg.remove();
+
+        // Set random word and create game board
+        rightGuessString = getRandomWord();
+        // console.log('Word to guess:', rightGuessString); // For testing
+        
+        const board = createGameBoard();
+        const keyboard = createKeyboard();
+        gameContainer.appendChild(board);
+        gameContainer.appendChild(keyboard);
+
+    } catch (error) {
+        console.error('Error initializing game:', error);
+        // Use fallback word if API fails
+        rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
+    }
+}
+
+// Start game when DOM loads
+document.addEventListener('DOMContentLoaded', initGame);
+
 
 // Create game board UI
 function createGameBoard() {
@@ -131,16 +159,58 @@ function deleteLetter() {
     currentCol--;
 }
 
-function checkGuess() {
+function showNotification(message, type = 'default', duration = 1500) {
+    // Remove any existing notifications
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+
+    // Create new notification
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    // Trigger animation
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+    // Remove notification after duration
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, duration);
+}
+
+async function checkGuess() {
     if (currentCol !== WORD_LENGTH) {
-        alert("Not enough letters!");
+        showNotification("Not enough letters!", "error");
         return;
     }
 
     let guessString = currentGuess.join('');
-    if (!WORDS.includes(guessString.toUpperCase())) {
-        alert("Word not in list!");
-        return;
+
+    // First check our local list
+    if (!WORDS.includes(guessString)) {
+        try {
+            // If not in local list, check the API
+            const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${guessString}`);
+            if (!response.ok) {
+                // Word not found in API
+                showNotification("Word not in list!", "error");
+                return;
+            }
+            // Word exists in API but not in our list, optionally add it
+            WORDS.push(guessString);
+        } catch (error) {
+            console.error('Error checking word:', error);
+            showNotification("Word not in list!", "error");
+            return;
+        }
     }
 
     const rows = document.getElementsByClassName("letter-row");
@@ -173,7 +243,7 @@ function checkGuess() {
 
     if (guessString === rightGuessString.toLowerCase()) {
         setTimeout(() => {
-            alert("You guessed right! Game over!");
+            showNotification("You guessed right! Game over!", "success", 3000);
         }, 1500);
         currentRow = guesses;
         return;
@@ -181,8 +251,7 @@ function checkGuess() {
     
     if (currentRow >= guesses - 1) {
         setTimeout(() => {
-            alert("You've run out of guesses! Game over!");
-            alert(`The right word was: "${rightGuessString}"`);
+            showNotification(`Game Over! The word was "${rightGuessString}"`, "error", 3000);
         }, 1500);
         currentRow = guesses;
         return;

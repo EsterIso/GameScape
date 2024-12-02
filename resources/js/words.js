@@ -1,4 +1,4 @@
-["right","tibet","zakat","droid","byway","swole","nahua","veery","goods",
+let WORDS = ["right","tibet","zakat","droid","byway","swole","nahua","veery","goods",
     "marri","dukka","egham","parle","wiggy","tihwa","cuddy","hoban","hejaz","choke","embus",
     "fundy","agura","algin","comal","ounce","zappa","brice","laura","gobat","stank","buchu",
     "caria","micra","penni","leady","dippy","shoad","arras","abbey","hogue","mache","glubb",
@@ -823,4 +823,66 @@
     "alibi","musca","fleer","merle","tuple","myers","ouija","yurak","askew","yasna","oomph",
     "groom","gursh","ictus","prodd","kedar","halal","sigla","mauka","paten","phony","mixed",
     "smash","dante","palpi","niles","spiry","stagy","ancon","abode","cloot","hayek","union",
-    "alcor","spume","larch","kongo","scrap","final"]
+    "alcor","spume","larch","kongo","scrap","final"];
+
+
+// Function to fetch words of specific length from Datamuse API instead
+async function fetchValidWords(startLetter) {
+    try {
+        // Using Datamuse API which is better suited for this purpose
+        const response = await fetch(`https://api.datamuse.com/words?sp=${startLetter}????&max=1000`);
+        const data = await response.json();
+        
+        // Filter valid words
+        const words = data
+            .map(entry => entry.word.toLowerCase())
+            .filter(word => 
+                word.length === 5 && 
+                /^[a-z]+$/.test(word) &&
+                !WORDS.includes(word)
+            );
+        
+        return words;
+    } catch (error) {
+        console.error('Error fetching words:', error);
+        return [];
+    }
+}
+
+export async function initializeWordList() {
+    try {
+        // Try to load cached words first
+        const cachedWords = localStorage.getItem('wordleWords');
+        if (cachedWords) {
+            WORDS = JSON.parse(cachedWords);
+            console.log('Loaded words from cache');
+            return WORDS;
+        }
+
+        // If no cache, fetch new words
+        const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+        console.log('Loading words from API...');
+        
+        for (const letter of letters) {
+            const newWords = await fetchValidWords(letter);
+            WORDS.push(...newWords);
+            // Reduced delay to make loading faster
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+        
+        // Cache the words
+        localStorage.setItem('wordleWords', JSON.stringify(WORDS));
+        console.log(`Loaded ${WORDS.length} words total`);
+        
+    } catch (error) {
+        console.error('Error initializing words:', error);
+    }
+    
+    return WORDS;
+}
+
+export function getRandomWord() {
+    return WORDS[Math.floor(Math.random() * WORDS.length)];
+}
+
+export { WORDS };
