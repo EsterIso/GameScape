@@ -124,7 +124,7 @@ header.dark-mode {
     flex-direction: column;
     gap: 4px;
     width: 100%;
-    margin: 15px auto;
+    margin: 15px auto 5px;
     padding: 10px;
 }
 
@@ -151,21 +151,21 @@ header.dark-mode {
     transition: background-color 0.3s ease;
 }
 
-/* Keyboard styling */
+/* Keyboard styling with increased sizes */
 .keyboard {
     width: 100%;
     max-width: 600px;
-    margin: 10px auto;
+    margin: 5px auto; /* Reduced top margin from 10px to 5px */
     padding: 5px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 5px;
 }
 
 .keyboard-row {
     display: flex;
     justify-content: center;
-    gap: 3px;
+    gap: 4px;
     width: 100%;
 }
 
@@ -174,9 +174,9 @@ header.dark-mode {
     color: white;
     border: none;
     border-radius: 4px;
-    padding: clamp(8px, 2vw, 15px);
-    min-width: clamp(25px, 8vw, 50px);
-    font-size: clamp(0.8rem, 3vw, 1rem);
+    padding: clamp(12px, 2.5vw, 20px); /* Increased padding */
+    min-width: clamp(35px, 9vw, 60px); /* Increased min-width */
+    font-size: clamp(1rem, 3.5vw, 1.2rem); /* Increased font size */
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-weight: bold;
@@ -185,8 +185,8 @@ header.dark-mode {
 
 .keyboard-key[data-key="enter"],
 .keyboard-key[data-key="del"] {
-    min-width: clamp(40px, 12vw, 80px);
-    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    min-width: clamp(50px, 13vw, 90px); /* Increased min-width for special keys */
+    font-size: clamp(0.9rem, 3vw, 1.1rem); /* Increased font size for special keys */
 }
 
 .keyboard-key:hover {
@@ -230,25 +230,15 @@ header.dark-mode {
     }
 }
 
-/* Landscape orientation adjustments */
+/* Landscape adjustments */
 @media screen and (max-height: 600px) and (orientation: landscape) {
-    .game-container {
-        padding: 5px;
-    }
-    
-    .game-cell {
-        width: clamp(30px, 10vw, 50px);
-        height: clamp(30px, 10vw, 50px);
-        font-size: clamp(1rem, 3vw, 1.5rem);
-    }
-    
     .keyboard {
-        margin: 5px auto;
+        margin: 3px auto;
     }
     
     .keyboard-key {
-        padding: clamp(5px, 1.5vw, 10px);
-        min-width: clamp(20px, 6vw, 40px);
-        font-size: clamp(0.7rem, 2vw, 0.9rem);
+        padding: clamp(8px, 2vw, 15px);
+        min-width: clamp(30px, 7vw, 50px);
+        font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     }
 }
