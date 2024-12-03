@@ -1,4 +1,4 @@
-import { initializeWordList, getRandomWord, WORDS } from "./words.js";
+import {getRandomWord, WORDS } from "./words.js";
 
 // Game state variables
 const WORD_LENGTH = 5;
@@ -9,35 +9,17 @@ let currentGuess = [];
 let rightGuessString;
 
 // Initialize game
-async function initGame() {
-    try {
-        // Show loading message
-        const gameContainer = document.querySelector('.game-container');
-        const loadingMsg = document.createElement('div');
-        loadingMsg.textContent = 'Loading word list...';
-        loadingMsg.style.marginBottom = '20px';
-        gameContainer.appendChild(loadingMsg);
-
-        // Initialize word list
-        await initializeWordList();
-        
-        // Remove loading message
-        loadingMsg.remove();
-
-        // Set random word and create game board
-        rightGuessString = getRandomWord();
-        // console.log('Word to guess:', rightGuessString); // For testing
-        
-        const board = createGameBoard();
-        const keyboard = createKeyboard();
-        gameContainer.appendChild(board);
-        gameContainer.appendChild(keyboard);
-
-    } catch (error) {
-        console.error('Error initializing game:', error);
-        // Use fallback word if API fails
-        rightGuessString = WORDS[Math.floor(Math.random() * WORDS.length)];
-    }
+function initGame() {
+    const gameContainer = document.querySelector('.game-container');
+    
+    // Set random word and create game board
+    rightGuessString = getRandomWord();
+    // console.log('Word to guess:', rightGuessString); // For testing
+    
+    const board = createGameBoard();
+    const keyboard = createKeyboard();
+    gameContainer.appendChild(board);
+    gameContainer.appendChild(keyboard);
 }
 
 // Start game when DOM loads
