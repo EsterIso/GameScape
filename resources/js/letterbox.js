@@ -200,17 +200,14 @@ async function checkGuess() {
 
     let guessString = currentGuess.join('');
 
-    // First check our local list
+    // Dictionary check (keeping your existing validation)
     if (!WORDS.includes(guessString)) {
         try {
-            // If not in local list, check the API
             const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${guessString}`);
             if (!response.ok) {
-                // Word not found in API
                 showNotification("Word not in list!", "error");
                 return;
             }
-            // Word exists in API but not in our list, optionally add it
             WORDS.push(guessString);
         } catch (error) {
             console.error('Error checking word:', error);
@@ -221,32 +218,53 @@ async function checkGuess() {
 
     const rows = document.getElementsByClassName("letter-row");
     const currentRowEl = rows[currentRow];
+    
+    // Convert strings to arrays for easier manipulation
     let rightGuess = Array.from(rightGuessString.toLowerCase());
-
+    let currentGuessArray = Array.from(guessString.toLowerCase());
+    
+    // Create arrays to track colors and letter frequencies
+    let colors = new Array(WORD_LENGTH).fill('grey');
+    let rightGuessLetterCount = {};
+    
+    // Count frequencies of letters in the target word
+    rightGuess.forEach(letter => {
+        rightGuessLetterCount[letter] = (rightGuessLetterCount[letter] || 0) + 1;
+    });
+    
+    // First pass: Mark all correct letters (green)
     for (let i = 0; i < WORD_LENGTH; i++) {
-        let letterColor = '';
-        let box = currentRowEl.children[i];
-        let letter = currentGuess[i];
-
-        let letterPosition = rightGuess.indexOf(letter);
-        if (letterPosition === -1) {
-            letterColor = 'grey';
-        } else {
-            if (currentGuess[i] === rightGuess[i]) {
-                letterColor = '#50c62e';
-            } else {
-                letterColor = 'gold';
-            }
-            rightGuess[letterPosition] = "#";
+        if (currentGuessArray[i] === rightGuess[i]) {
+            colors[i] = '#50c62e'; // green
+            rightGuessLetterCount[currentGuessArray[i]]--;
         }
-
+    }
+    
+    // Second pass: Mark yellow letters, respecting remaining frequencies
+    for (let i = 0; i < WORD_LENGTH; i++) {
+        if (colors[i] === '#50c62e') continue; // Skip already green letters
+        
+        let currentLetter = currentGuessArray[i];
+        if (rightGuessLetterCount[currentLetter] && rightGuessLetterCount[currentLetter] > 0) {
+            colors[i] = 'gold';
+            rightGuessLetterCount[currentLetter]--;
+        }
+    }
+    
+    // Apply colors with animation
+    for (let i = 0; i < WORD_LENGTH; i++) {
+        const box = currentRowEl.children[i];
+        const letter = currentGuessArray[i];
+        const color = colors[i];
+        
         let delay = 250 * i;
         setTimeout(() => {
-            box.style.backgroundColor = letterColor;
-            shadeKeyBoard(letter, letterColor);
+            box.style.backgroundColor = color;
+            shadeKeyBoard(letter, color);
         }, delay);
     }
 
+    // Check for win/lose conditions
     if (guessString === rightGuessString.toLowerCase()) {
         setTimeout(() => {
             showNotification("You guessed right! Game over!", "success", 3000);
