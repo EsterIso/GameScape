@@ -100,6 +100,12 @@ document.addEventListener("keyup", (e) => {
     }
 
     let pressedKey = String(e.key);
+    
+    // Ignore only actual function keys, not letters when caps lock is on
+    if (pressedKey.length > 1 && pressedKey.startsWith('F') && !isNaN(pressedKey.slice(1))) {
+        return; // Ignore only F1-F12 keys
+    }
+
     if (pressedKey === "Backspace" && currentCol !== 0) {
         deleteLetter();
         return;
