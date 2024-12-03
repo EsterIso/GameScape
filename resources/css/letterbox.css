@@ -256,32 +256,38 @@ textarea {
 
 /* Mobile adjustments */
 /* Mobile adjustments for screens 480px and under */
+/* Mobile adjustments for screens 480px and under */
 @media screen and (max-width: 480px) {
     .keyboard {
-        gap: 6px; /* Increased gap between rows */
+        gap: 5px; /* Slightly reduced gap */
     }
 
     .keyboard-row {
-        gap: 5px; /* Increased gap between keys */
+        gap: 4px; /* Slightly reduced gap */
     }
 
     .keyboard-key {
-        padding: clamp(14px, 3vw, 18px); /* Increased padding */
-        min-width: clamp(32px, 9vw, 50px); /* Increased width */
-        font-size: clamp(1.1rem, 3.5vw, 1.3rem); /* Larger font */
+        padding: clamp(12px, 2.8vw, 16px); /* Slightly reduced padding */
+        min-width: clamp(30px, 8.5vw, 45px); /* Slightly reduced width */
+        font-size: clamp(1rem, 3.2vw, 1.2rem); /* Slightly smaller font */
+        display: flex; /* Added for better centering */
+        align-items: center; /* Center vertically */
+        justify-content: center; /* Center horizontally */
+        line-height: 1; /* Prevent line height from affecting centering */
     }
 
     .keyboard-key[data-key="enter"],
     .keyboard-key[data-key="del"] {
-        min-width: clamp(48px, 12vw, 70px); /* Wider special keys */
-        padding: clamp(10px, 2vw, 14px);
-        font-size: clamp(0.5rem, 2.5vw, 1rem); /* Larger font for special keys */
+        min-width: clamp(45px, 11vw, 65px); /* Adjusted width */
+        padding: clamp(8px, 1.8vw, 12px);
+        font-size: clamp(0.75rem, 2.6vw, 0.9rem);
     }
 
-    /* Adjust game cells to maintain proportion */
+    /* Adjust game cells accordingly */
     .game-cell {
-        width: clamp(50px, 13vw, 65px);
-        height: clamp(50px, 13vw, 65px);
+        width: clamp(60px, 14vw, 75px);
+        height: clamp(60px, 14vw, 75px);
+        font-size: clamp(1.4rem, 4.2vw, 2.2rem);
     }
 }
 
