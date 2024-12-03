@@ -103,7 +103,7 @@ header.dark-mode {
 
 .game-title {
     width: min(95%, 600px);
-    margin: 10px auto;
+    margin: 0px auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -255,18 +255,33 @@ textarea {
 }
 
 /* Mobile adjustments */
+/* Mobile adjustments for screens 480px and under */
 @media screen and (max-width: 480px) {
+    .keyboard {
+        gap: 6px; /* Increased gap between rows */
+    }
+
+    .keyboard-row {
+        gap: 5px; /* Increased gap between keys */
+    }
+
     .keyboard-key {
-        padding: clamp(10px, 2vw, 15px);
-        min-width: clamp(25px, 8vw, 45px);
-        font-size: clamp(0.9rem, 3vw, 1rem);
+        padding: clamp(14px, 3vw, 18px); /* Increased padding */
+        min-width: clamp(32px, 9vw, 50px); /* Increased width */
+        font-size: clamp(1.1rem, 3.5vw, 1.3rem); /* Larger font */
     }
 
     .keyboard-key[data-key="enter"],
     .keyboard-key[data-key="del"] {
-        min-width: clamp(40px, 10vw, 60px);
-        padding: clamp(6px, 1.5vw, 12px);
-        font-size: clamp(0.6rem, 2.2vw, 0.8rem);
+        min-width: clamp(48px, 12vw, 70px); /* Wider special keys */
+        padding: clamp(10px, 2vw, 14px);
+        font-size: clamp(0.5rem, 2.5vw, 1rem); /* Larger font for special keys */
+    }
+
+    /* Adjust game cells to maintain proportion */
+    .game-cell {
+        width: clamp(50px, 13vw, 65px);
+        height: clamp(50px, 13vw, 65px);
     }
 }
 
