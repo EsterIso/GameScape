@@ -138,8 +138,8 @@ header.dark-mode {
 
 .game-cell {
     background-color: #8b5cf6;
-    width: clamp(40px, 15vw, 60px);
-    height: clamp(40px, 15vw, 60px);
+    width: clamp(60px, 15vw, 80px);
+    height: clamp(60px, 15vw, 80px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -181,12 +181,16 @@ header.dark-mode {
     transition: background-color 0.3s ease;
     font-weight: bold;
     text-transform: uppercase;
+    text-align: center;
 }
 
 .keyboard-key[data-key="enter"],
 .keyboard-key[data-key="del"] {
-    min-width: clamp(50px, 13vw, 90px); /* Increased min-width for special keys */
-    font-size: clamp(0.9rem, 3vw, 1.1rem); /* Increased font size for special keys */
+    min-width: clamp(45px, 12vw, 85px); /* Slightly reduced to prevent overflow */
+    font-size: clamp(0.8rem, 2.8vw, 1rem); /* Slightly smaller font */
+    padding: clamp(12px, 2.5vw, 18px); /* Adjusted padding */
+    word-break: keep-all; /* Prevent text wrapping */
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 .keyboard-key:hover {
@@ -223,14 +227,50 @@ header.dark-mode {
     background-color: #50c62e;
 }
 
-/* Prevent zooming on mobile devices */
-@media screen and (max-width: 768px) {
-    input, select, textarea {
-        font-size: 16px;
+
+/* Add this to prevent double-tap zoom on interactive elements */
+button,
+.keyboard-key,
+.game-cell,
+.card,
+.player,
+.cpu,
+[role="button"],
+input,
+select,
+textarea {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Prevent text selection on the entire game interface */
+.game-container,
+.keyboard,
+.game-board {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 480px) {
+    .keyboard-key {
+        padding: clamp(10px, 2vw, 15px);
+        min-width: clamp(25px, 8vw, 45px);
+        font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+
+    .keyboard-key[data-key="enter"],
+    .keyboard-key[data-key="del"] {
+        min-width: clamp(40px, 10vw, 60px);
+        padding: clamp(6px, 1.5vw, 12px);
+        font-size: clamp(0.6rem, 2.2vw, 0.8rem);
     }
 }
 
-/* Landscape adjustments */
+/* Landscape orientation adjustments */
 @media screen and (max-height: 600px) and (orientation: landscape) {
     .keyboard {
         margin: 3px auto;
@@ -240,5 +280,12 @@ header.dark-mode {
         padding: clamp(8px, 2vw, 15px);
         min-width: clamp(30px, 7vw, 50px);
         font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    }
+
+    .keyboard-key[data-key="enter"],
+    .keyboard-key[data-key="del"] {
+        min-width: clamp(40px, 11vw, 80px);
+        font-size: clamp(0.7rem, 2.2vw, 0.9rem);
+        padding: clamp(6px, 1.5vw, 12px);
     }
 }
