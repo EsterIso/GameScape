@@ -148,8 +148,29 @@ header.dark-mode {
     object-fit: cover;
 }
 
+.game-card video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
 .game-card.dark-mode {
     border: 2px solid rgba( 166, 127, 255, .5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+.game-card:hover .game-video {
+    opacity: 1;
+}
+
+.game-card.dark-mode {
+    border: 2px solid rgba(166, 127, 255, .5);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
@@ -160,16 +181,16 @@ header.dark-mode {
     left: 0;
     width: 100%;
     padding: 10px;
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    background: rgba(0, 0, 0, 0.6);
     color: white;
     font-size: 18px;
     text-align: center;
     opacity: 0;
     transition: opacity 0.3s ease;
-    
-  }
+    z-index: 2;
+}
 
-.game-card:hover .title-overlay{
+.game-card:hover .title-overlay {
     opacity: 1;
 }
 

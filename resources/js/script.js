@@ -47,4 +47,22 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     console.warn('Clerk script not found');
   }
+
+  // Handle video previews
+  gameCards.forEach(card => {
+      const video = card.querySelector('video');
+      
+      if (video) {
+          card.addEventListener('mouseenter', () => {
+              video.play().catch(err => {
+                  console.warn('Video autoplay failed:', err);
+              });
+          });
+          
+          card.addEventListener('mouseleave', () => {
+              video.pause();
+              video.currentTime = 0;
+          });
+      }
+  });
 });
