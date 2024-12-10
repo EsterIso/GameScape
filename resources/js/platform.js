@@ -2,6 +2,15 @@
 export class Game {
     constructor() {
         this.initializeGame();
+        this.setupAudio();
+    }
+
+    setupAudio() {
+        // Create audio element
+        this.backgroundMusic = new Audio();
+        this.backgroundMusic.src = '../resources/music/retro-platformer.mp3';  // Path to your music file
+        this.backgroundMusic.loop = true;
+        this.backgroundMusic.volume = 0.2;  // 70% volume
     }
 
     setupNotificationSystem() {
@@ -335,7 +344,7 @@ export class Game {
         // Update HUD with coin requirement
         const levelDisplay = document.getElementById('level');
         if (levelDisplay) {
-            levelDisplay.textContent = `Level: ${this.level} (Lives: ${this.lives})`;
+            levelDisplay.textContent = `${this.level} (Lives: ${this.lives})`;
         }
     }
 
@@ -378,6 +387,9 @@ export class Game {
         this.gameStarted = true;
         this.setupLevel(this.level);
         this.gameLoop();
+        this.backgroundMusic.play().catch(error => {
+            console.log('Audio autoplay failed:', error);
+        });
     }
 
     updatePlayerPosition() {
@@ -526,7 +538,7 @@ export class Game {
 
         // Jump 
         if (this.keys['Space'] && this.onGround) {
-            this.velocity.y = -10; 
+            this.velocity.y = -10.5; 
             this.onGround = false;
         }
 
