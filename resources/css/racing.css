@@ -1,0 +1,313 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: white;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: var(--text-color, black);
+    min-height: 100vh;
+    width: 100%;
+}
+
+body.dark-mode {
+    background-color: #171331;
+    --text-color: white;
+}
+
+header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #ececec;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #8b5cf6;
+    text-shadow: 0 0 10px rgba(166, 127, 255, .8),
+               0 0 20px rgba(166, 127, 255, .6),
+               0 0 40px rgba(166, 127, 255, .4),
+               0 0 80px rgba(166, 127, 255, .2);
+}
+
+header.dark-mode {
+    background-color: #483D8B;
+    color: #ececec;
+}
+
+.header-btn {
+    display: flex;
+    padding: 0 5px;
+    gap: 5px;
+}
+
+.home, .theme-toggle, #sign-in-button, #resetGame {
+    background-color: #8b5cf6;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-size: auto;
+}
+
+@media (max-width: 480px) {
+    .home, .theme-toggle, #sign-in-button, #resetGame {
+        padding: 6px 12px;
+        font-size: 12px;
+        background-size: 80% 80%;
+    }
+}
+
+#user-button {
+    background-color: #8b5cf6;
+    border-radius: 20px;
+    border: none;
+    background-position: center;
+    padding: 5px;
+}
+
+.home:hover, .theme-toggle:hover, #user-button:hover, #resetGame:hover {
+    background-color: #7c3aed;
+}
+
+#theme {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1lY2xpcHNlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIvPjxwYXRoIGQ9Ik0xMiAyYTcgNyAwIDEgMCAxMCAxMCIvPjwvc3ZnPg==');
+}
+
+/* game.css - Racing game specific styles */
+.game-container {
+    width: 100%;
+    height: calc(100vh - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-height: calc(100vh - 100px);
+}
+
+.road {
+    background-color: #515054;
+    height: 80vh;
+    width: 400px;
+    margin: auto;
+    position: relative;
+    border-left: 5px white dashed;
+    border-right: 5px white dashed;
+    z-index: 1;
+}
+
+.lines {
+    background-color: white;
+    height: 100px;
+    width: 10px;
+    position: absolute;
+    margin-left: 195px;
+    z-index: -1;
+}
+
+.car {
+    height: 75px;
+    width: 41px;
+    position: absolute;
+    background-image: url('/resources/image/car.png');
+    background-size: cover;
+    bottom: 120px;
+    background-position-x: center;
+    z-index: -1;
+}
+
+.enemies {
+    height: 75px;
+    width: 41px;
+    position: absolute;
+    -webkit-transform: scaleY(-1);
+    background-size: cover;
+    bottom: 120px;
+    background-position-x: center;
+    z-index: -1;
+
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #8b5cf6;
+    color: #fff;
+    border: none;
+    padding: 0 24px;
+    height: 100%;
+    width: 75%;
+    outline: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+    background-color: #7c3aed;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.push {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 401px;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border: none;
+}
+
+.power-up {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    z-index: 1;
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+.power-up.shield {
+    background: radial-gradient(circle at 30% 30%, #00ffff, #0000ff);
+    box-shadow: 0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 30px #00ffff,
+                0 0 40px #00ffff;
+}
+
+.power-up.speed {
+    background: radial-gradient(circle at 30% 30%, #ff6b6b, #ff0000);
+    box-shadow: 0 0 10px #ff6b6b,
+                0 0 20px #ff6b6b,
+                0 0 30px #ff6b6b,
+                0 0 40px #ff6b6b;
+}
+
+/* Shield effect for car */
+.car.shield-active {
+    box-shadow: 0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 30px #00ffff;
+    animation: shieldPulse 2s infinite;
+}
+
+.car.speed-active {
+    box-shadow: 0 0 10px #ff6b6b,
+                0 0 20px #ff6b6b,
+                0 0 30px #ff6b6b;
+    animation: speedTrail 0.5s infinite;
+}
+
+.night-mode-toggle, .music-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #8b5cf6;
+    color: white;
+    padding: 0 24px;
+    height: 100%;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.night-mode-toggle:hover, .music-toggle:hover {
+    background-color: #7c3aed;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active,
+.night-mode-toggle:active, .music-toggle:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.road.night-mode {
+    background-color: #1a1a1a;
+    transition: background-color 0.5s ease;
+}
+
+.car.headlights-on::before {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 100px;
+    background: radial-gradient(
+        ellipse at top,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.2) 40%,
+        rgba(255, 255, 255, 0.1) 60%,
+        rgba(255, 255, 255, 0) 80%
+    );
+    left: -20px;
+    top: -100px;
+    pointer-events: none;
+    transform: perspective(200px) rotateX(5deg);
+}
+
+/* Add some ambient lighting effects for night mode */
+.road.night-mode .lines {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.enemies.night-mode {
+    filter: brightness(0.8);
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px #fff,
+                    0 0 10px currentColor,
+                    0 0 15px currentColor;
+    }
+    to {
+        box-shadow: 0 0 10px #fff,
+                    0 0 20px currentColor,
+                    0 0 30px currentColor;
+    }
+}
+
+@keyframes shieldPulse {
+    0% { box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff; }
+    50% { box-shadow: 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff; }
+    100% { box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff; }
+}
+
+@keyframes speedTrail {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
