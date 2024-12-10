@@ -76,6 +76,7 @@ export class Game {
         this.gameActive = true;
         this.isTransitioning = false;
         this.lives = 3; 
+        this.levelCompleted = false;
         this.isDead = false;
         this.enemies = [];
         this.enemySpeed = 1;
@@ -102,7 +103,7 @@ export class Game {
                     { x: 150, y: 450, width: 80, height: 20 },
                     { x: 350, y: 400, width: 80, height: 20 },
                     { x: 550, y: 350, width: 80, height: 20 },
-                    { x: 350, y: 250, width: 80, height: 20 },
+                    { x: 355, y: 250, width: 80, height: 20 },
                     { x: 150, y: 200, width: 80, height: 20 }
                 ],
                 enemies: [
@@ -461,6 +462,7 @@ export class Game {
             if (this.checkCollision(this.player.getBoundingClientRect(), goalRect)) {
                 if (this.coins.length === 0 && !this.isTransitioning) {
                     this.isTransitioning = true; // Prevent multiple transitions
+                    this.levelCompleted = true; // Set level as completed
                     this.showNotification('Level Complete!', 'success', 1500);
                     
                     // Delay level advance to allow for notification
@@ -488,6 +490,11 @@ export class Game {
     }
 
     handleDeath() {
+        // Check if level is completed before handling death
+        if (this.levelCompleted) {
+            return; // Skip death handling if level is completed
+        }
+
         this.lives--;
         this.isDead = true;
         this.showNotification('You died!', 'error', 1500);
@@ -505,6 +512,7 @@ export class Game {
                 this.level = 1;
                 this.coinsCollected = 0;
                 this.isDead = false;
+                this.levelCompleted = false; // Reset completion status
                 this.setupLevel(this.level);
                 this.showNotification('Starting over with 3 lives', 'default', 1500);
             }, 2000);
@@ -650,6 +658,7 @@ export class Game {
     }
 
     nextLevel() {
+        this.levelCompleted = false;
         this.level++;
         if (this.level > Object.keys(this.levels).length) {
             this.showNotification('Congratulations! You completed all levels!', 'success', 2000);

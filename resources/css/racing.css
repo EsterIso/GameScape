@@ -97,30 +97,36 @@ header.dark-mode {
 
 .container {
     width: 100%;
-    max-width: 800px;
+    max-width: 1200px;
     margin: auto;
     padding: 20px;
     border-radius: 10px;
-    max-height: calc(100vh - 100px);
+    height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
 }
 
 .road {
     background-color: #515054;
-    height: 80vh;
-    width: 400px;
+    height: calc(100% - 70px);
+    width: min(400px, 90vw);
     margin: auto;
     position: relative;
-    border-left: 5px white dashed;
-    border-right: 5px white dashed;
+    border-left: clamp(2px, 1.25%, 5px) white dashed;
+    border-right: clamp(2px, 1.25%, 5px) white dashed;
     z-index: 1;
+    overflow: hidden;
 }
 
 .lines {
     background-color: white;
-    height: 100px;
-    width: 10px;
+    height: 15%;  /* Relative to road height */
+    width: 2.5%;  /* Relative to road width */
+    min-width: 4px;
+    max-width: 10px;
     position: absolute;
-    margin-left: 195px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: -1;
 }
 
@@ -130,22 +136,19 @@ header.dark-mode {
     position: absolute;
     background-image: url('/resources/image/car.png');
     background-size: cover;
-    bottom: 120px;
     background-position-x: center;
     border-radius: 8px;
-    z-index: -1;
+    z-index: 1;
 }
 
 .enemies {
     height: 75px;
     width: 41px;
     position: absolute;
-    -webkit-transform: scaleY(-1);
     background-size: cover;
-    bottom: 120px;
     background-position-x: center;
-    z-index: -1;
-
+    border-radius: 8px;
+    z-index: 1;
 }
 
 .btn {
@@ -179,9 +182,8 @@ header.dark-mode {
     justify-content: center;
     align-items: center;
     height: 50px;
-    width: 401px;
-    margin: auto;
-    margin-bottom: 20px;
+    width: min(401px, 90vw);
+    margin: 20px auto 0;
     padding: 5px;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 10px;
@@ -193,7 +195,7 @@ header.dark-mode {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    z-index: 1;
+    z-index: 2;
     animation: glow 1.5s ease-in-out infinite alternate;
 }
 

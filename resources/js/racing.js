@@ -3,7 +3,10 @@ let player = {
     step: 5,
     baseSpeed: 5,
     speedMultiplier: 1,
-    speedBoostEndTime: 0
+    speedBoostEndTime: 0,
+    start: false,
+    x: 0,
+    y: 0
 };
 let keys = { ArrowUp: false, ArrowDown: false, ArrowRight: false, ArrowLeft: false, Space: false };
 let score = 0;
@@ -43,7 +46,6 @@ function toggleMusic() {
     isMusicPlaying = !isMusicPlaying;
 }
 
-// Add this function to your existing code
 function toggleNightMode() {
     isNightMode = !isNightMode;
     const road = document.querySelector('.road');
@@ -52,12 +54,12 @@ function toggleNightMode() {
     
     if (isNightMode) {
         road.classList.add('night-mode');
-        playerCar.classList.add('headlights-on');
+        playerCar?.classList.add('headlights-on');
         enemies.forEach(enemy => enemy.classList.add('night-mode'));
         nightModeBtn.textContent = '☀️';
     } else {
         road.classList.remove('night-mode');
-        playerCar.classList.remove('headlights-on');
+        playerCar?.classList.remove('headlights-on');
         enemies.forEach(enemy => enemy.classList.remove('night-mode'));
         nightModeBtn.textContent = '🌙';
     }
@@ -98,175 +100,77 @@ function keyUp(event) {
 
 function moveLines() {
     let lines = document.querySelectorAll('.lines');
+    const roadHeight = roadArea.offsetHeight;
+    const lineHeight = roadHeight * 0.15; // Match the 15% height from CSS
+    const totalLines = Math.ceil(roadHeight / (lineHeight * 0.7)) + 1; // Add extra line for smooth transition
+    
+    // Create or remove lines based on road size
+    const currentLines = lines.length;
+    if (currentLines < totalLines) {
+        for (let i = currentLines; i < totalLines; i++) {
+            let roadline = document.createElement('div');
+            roadline.setAttribute('class', 'lines');
+            roadline.y = i * (lineHeight * 0.7);
+            roadline.style.top = roadline.y + 'px';
+            roadArea.appendChild(roadline);
+        }
+    } else if (currentLines > totalLines) {
+        for (let i = totalLines; i < currentLines; i++) {
+            if (lines[i]) lines[i].remove();
+        }
+    }
+
+    // Update lines position
+    lines = document.querySelectorAll('.lines'); // Refresh lines collection
     lines.forEach(item => {
-        if (item.y >= 700) {
-            item.y = item.y - 750;
+        if (item.y >= roadHeight) {
+            item.y = item.y - (roadHeight + lineHeight);
         }
         item.y = item.y + player.step;
         item.style.top = item.y + 'px';
     });
 }
 
+
 function moveEnemies(playercar) {
     let vehicles = document.querySelectorAll('.enemies');
     let playercarb = playercar.getBoundingClientRect();
+    const roadHeight = roadArea.offsetHeight;
 
     vehicles.forEach(item => {
         let othercarb = item.getBoundingClientRect();
+        
+        // Collision detection
         if (!playerIsInvincible && 
             !((playercarb.bottom < othercarb.top) || 
               (playercarb.top > othercarb.bottom) || 
               (playercarb.left > othercarb.right) || 
               (playercarb.right < othercarb.left))) {
-            // Store night mode state before game over
             const wasNightMode = isNightMode;
-            
-            alert("The Final Score is " + (score) + "\n Press OK to play again");
-            
-            // Reset game state without page reload
-            resetGameState();
-            
-            // Clear existing elements
-            while (roadArea.firstChild) {
-                roadArea.removeChild(roadArea.firstChild);
-            }
-            
-            // Reset button state
-            startBtn.style.backgroundColor = "crimson";
-            startBtn.style.cursor = "pointer";
-            startBtn.innerHTML = "Start Game";
-            document.querySelector(".push").style.border = "5px solid crimson";
-            
-            // Restore night mode if it was active
-            if (wasNightMode) {
-                isNightMode = true;
-                const road = document.querySelector('.road');
-                if (road) road.classList.add('night-mode');
-                nightModeBtn.textContent = '☀️';
-            }
-            
+            endGame(wasNightMode);
             return;
         }
-        if (item.y >= 815) {
+
+        // Reset enemy position when it goes off screen
+        if (item.y >= roadHeight) {
             score = score + 1;
             startBtn.innerHTML = "Score: " + score;
-            item.y = -300;
-            item.style.left = Math.floor(Math.random() * 350) + 'px';
-            // Assign a new random enemy car image
+            item.y = -100; // Start slightly above the road
+            item.style.left = Math.floor(Math.random() * (roadArea.offsetWidth - 50)) + 'px';
             const randomImageIndex = Math.floor(Math.random() * enemyCarImages.length);
             item.style.backgroundImage = `url('${enemyCarImages[randomImageIndex]}')`;
             if (isNightMode) {
                 item.classList.add('night-mode');
             }
         }
+        
         item.y = item.y + player.step;
         item.style.top = item.y + 'px';
     });
 }
 
-function resetGameState() {
-    score = 0;
-    player.start = false;
-    player.step = player.baseSpeed;
-    player.speedMultiplier = 1;
-    playerIsInvincible = false;
-    isSpeedBoostActive = false;
-    
-    // Reset all key states
-    keys = { 
-        ArrowUp: false, 
-        ArrowDown: false, 
-        ArrowRight: false, 
-        ArrowLeft: false, 
-        Space: false 
-    };
-    
-    // Remove any active power-ups
-    const playerCar = document.querySelector('.car');
-    if (playerCar) {
-        playerCar.classList.remove('shield-active', 'speed-active');
-    }
-    
-    // Remove any existing power-ups from the road
-    const powerUps = document.querySelectorAll('.power-up');
-    powerUps.forEach(powerUp => powerUp.remove());
-}
-
-
-function playArea() {
-    let playercar = document.querySelector('.car');
-    let road = roadArea.getBoundingClientRect();
-    
-    if (player.start) {
-        moveLines();
-        moveEnemies(playercar);
-        createPowerUp();
-        
-        if (keys.ArrowUp && player.y > (road.top + 80)) {
-            player.y = player.y - player.step;
-        }
-        if (keys.ArrowDown && player.y < (road.bottom - 150)) {
-            player.y = player.y + player.step;
-        }
-        if (keys.ArrowLeft && player.x > 0) {
-            player.x = player.x - player.step;
-        }
-        if (keys.ArrowRight && player.x < (road.width - 64)) {
-            player.x = player.x + player.step;
-        }
-
-        playercar.style.top = player.y + 'px';
-        playercar.style.left = player.x + 'px';
-        window.requestAnimationFrame(playArea);
-    }
-}
-
-function init() {
-    player.start = true;
-    player.step = player.baseSpeed;
-    window.requestAnimationFrame(playArea);
-
-    // Create road lines
-    for (let i = 0; i < 5; i++) {
-        let roadlines = document.createElement('div');
-        roadlines.setAttribute('class', 'lines');
-        roadlines.y = i * 150;
-        roadlines.style.top = roadlines.y + 'px';
-        roadArea.appendChild(roadlines);
-    }
-
-    // Create player car
-    let playercar = document.createElement('div');
-    playercar.setAttribute('class', 'car');
-    // Add headlights if night mode is active
-    if (isNightMode) {
-        playercar.classList.add('headlights-on');
-    }
-    roadArea.appendChild(playercar);
-
-    player.x = playercar.offsetLeft;
-    player.y = playercar.offsetTop;
-
-    // Create enemy cars with random images
-    for (let x = 0; x < 4; x++) {
-        let enemies = document.createElement('div');
-        enemies.setAttribute('class', 'enemies');
-        const randomImageIndex = Math.floor(Math.random() * enemyCarImages.length);
-        enemies.style.backgroundImage = `url('${enemyCarImages[randomImageIndex]}')`;
-        enemies.y = ((x + 1) * 350) * -1;
-        enemies.style.top = enemies.y + 'px';
-        enemies.style.left = Math.floor(Math.random() * 350) + 'px';
-        if (isNightMode) {
-            enemies.classList.add('night-mode');
-        }
-        roadArea.appendChild(enemies);
-    }
-}
-
-nightModeBtn.addEventListener('click', toggleNightMode);
-
 function createPowerUp() {
-    if (Math.random() < 0.002) { // 5% chance to spawn a power-up
+    if (Math.random() < 0.002) { // 0.2% chance to spawn a power-up
         const powerUp = document.createElement('div');
         powerUp.classList.add('power-up');
         
@@ -313,6 +217,8 @@ function movePowerUp(powerUp) {
 }
 
 function isColliding(element1, element2) {
+    if (!element1 || !element2) return false;
+    
     const rect1 = element1.getBoundingClientRect();
     const rect2 = element2.getBoundingClientRect();
     
@@ -347,21 +253,135 @@ function activatePowerUp(type) {
         }
 
         // Check for speed boost end
-        const checkSpeedBoostEnd = () => {
-            if (currentTime >= player.speedBoostEndTime) {
-                isSpeedBoostActive = false;
-                player.step = player.baseSpeed;
-                playerCar.classList.remove('speed-active');
-            } else if (isSpeedBoostActive) {
-                // Continue checking if still active
-                requestAnimationFrame(checkSpeedBoostEnd);
-            }
-        };
-        
-        requestAnimationFrame(checkSpeedBoostEnd);
+        setTimeout(() => {
+            isSpeedBoostActive = false;
+            player.step = player.baseSpeed;
+            playerCar.classList.remove('speed-active');
+        }, powerUpDuration);
     }
 }
 
+function playArea() {
+    let playercar = document.querySelector('.car');
+    let road = roadArea.getBoundingClientRect();
+    
+    if (player.start) {
+        moveLines();
+        moveEnemies(playercar);
+        createPowerUp();
+        
+        if (keys.ArrowUp && player.y > (road.top + 70)) {
+            player.y = player.y - player.step;
+        }
+        if (keys.ArrowDown && player.y < (road.bottom - 85)) {
+            player.y = player.y + player.step;
+        }
+        if (keys.ArrowLeft && player.x > 0) {
+            player.x = player.x - player.step;
+        }
+        if (keys.ArrowRight && player.x < (road.width - 50)) {
+            player.x = player.x + player.step;
+        }
+
+        playercar.style.top = player.y + 'px';
+        playercar.style.left = player.x + 'px';
+        window.requestAnimationFrame(playArea);
+    }
+}
+
+
+function init() {
+    player.start = true;
+    player.step = player.baseSpeed;
+    const roadHeight = roadArea.offsetHeight;
+    const lineHeight = roadHeight * 0.15;
+    const totalLines = Math.ceil(roadHeight / (lineHeight * 0.7)) + 1;
+
+    // Create initial road lines
+    for (let i = 0; i < totalLines; i++) {
+        let roadlines = document.createElement('div');
+        roadlines.setAttribute('class', 'lines');
+        roadlines.y = i * (lineHeight * 0.7);
+        roadlines.style.top = roadlines.y + 'px';
+        roadArea.appendChild(roadlines);
+    }
+
+    // Create player car
+    let playercar = document.createElement('div');
+    playercar.setAttribute('class', 'car');
+    if (isNightMode) {
+        playercar.classList.add('headlights-on');
+    }
+    roadArea.appendChild(playercar);
+
+    // Set initial position
+    player.x = (roadArea.offsetWidth - 50) / 2;
+    player.y = roadHeight - 120;
+
+    // Create enemy cars
+    for (let x = 0; x < 4; x++) {
+        let enemies = document.createElement('div');
+        enemies.setAttribute('class', 'enemies');
+        const randomImageIndex = Math.floor(Math.random() * enemyCarImages.length);
+        enemies.style.backgroundImage = `url('${enemyCarImages[randomImageIndex]}')`;
+        enemies.y = ((x + 1) * 350) * -1;
+        enemies.style.top = enemies.y + 'px';
+        enemies.style.left = Math.floor(Math.random() * (roadArea.offsetWidth - 50)) + 'px';
+        if (isNightMode) {
+            enemies.classList.add('night-mode');
+        }
+        roadArea.appendChild(enemies);
+    }
+    
+    window.requestAnimationFrame(playArea);
+}
+
+function resetGameState() {
+    score = 0;
+    player.start = false;
+    player.step = player.baseSpeed;
+    player.speedMultiplier = 1;
+    playerIsInvincible = false;
+    isSpeedBoostActive = false;
+    
+    keys = { 
+        ArrowUp: false, 
+        ArrowDown: false, 
+        ArrowRight: false, 
+        ArrowLeft: false, 
+        Space: false 
+    };
+    
+    const playerCar = document.querySelector('.car');
+    if (playerCar) {
+        playerCar.classList.remove('shield-active', 'speed-active');
+    }
+    
+    const powerUps = document.querySelectorAll('.power-up');
+    powerUps.forEach(powerUp => powerUp.remove());
+}
+
+function endGame(wasNightMode) {
+    alert("The Final Score is " + (score) + "\n Press OK to play again");
+    resetGameState();
+    
+    while (roadArea.firstChild) {
+        roadArea.removeChild(roadArea.firstChild);
+    }
+    
+    startBtn.style.backgroundColor = "crimson";
+    startBtn.style.cursor = "pointer";
+    startBtn.innerHTML = "Start Game";
+    document.querySelector(".push").style.border = "5px solid crimson";
+    
+    if (wasNightMode) {
+        isNightMode = true;
+        roadArea.classList.add('night-mode');
+        nightModeBtn.textContent = '☀️';
+    }
+}
+
+// Setup music controls
 const musicBtn = document.createElement('button');
 musicBtn.className = 'music-toggle';
 musicBtn.textContent = '🔇';
@@ -369,6 +389,7 @@ musicBtn.title = 'Music Off';
 document.querySelector('.push').appendChild(musicBtn);
 
 musicBtn.addEventListener('click', toggleMusic);
+nightModeBtn.addEventListener('click', toggleNightMode);
 
 function startgame() {
     document.querySelector(".push").style.border = "5px solid rgb(86,50,57)";
@@ -376,7 +397,6 @@ function startgame() {
     startBtn.style.cursor = "not-allowed";
     startBtn.innerHTML = "Use Arrow keys to Navigate";
     
-    // Start background music if it's enabled
     if (!backgroundMusic) {
         setupAudio();
     }
