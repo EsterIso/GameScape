@@ -132,6 +132,7 @@ header.dark-mode {
     background-size: cover;
     bottom: 120px;
     background-position-x: center;
+    border-radius: 8px;
     z-index: -1;
 }
 
@@ -214,18 +215,21 @@ header.dark-mode {
 
 /* Shield effect for car */
 .car.shield-active {
-    box-shadow: 0 0 10px #00ffff,
-                0 0 20px #00ffff,
-                0 0 30px #00ffff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px 5px rgba(0, 255, 255, 0.6),
+                0 0 25px 10px rgba(0, 255, 255, 0.4),
+                0 0 35px 15px rgba(0, 255, 255, 0.2);
     animation: shieldPulse 2s infinite;
 }
 
 .car.speed-active {
-    box-shadow: 0 0 10px #ff6b6b,
-                0 0 20px #ff6b6b,
-                0 0 30px #ff6b6b;
+    border-radius: 8px;
+    box-shadow: 0 0 15px 5px rgba(255, 107, 107, 0.6),
+                0 0 25px 10px rgba(255, 107, 107, 0.4),
+                0 0 35px 15px rgba(255, 107, 107, 0.2);
     animation: speedTrail 0.5s infinite;
 }
+
 
 .night-mode-toggle, .music-toggle {
     display: flex;

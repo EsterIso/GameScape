@@ -1,7 +1,9 @@
 const roadArea = document.querySelector('.road');
 let player = { 
     step: 5,
-    speedMultiplier: 1
+    baseSpeed: 5,
+    speedMultiplier: 1,
+    speedBoostEndTime: 0
 };
 let keys = { ArrowUp: false, ArrowDown: false, ArrowRight: false, ArrowLeft: false, Space: false };
 let score = 0;
@@ -165,7 +167,7 @@ function moveEnemies(playercar) {
 function resetGameState() {
     score = 0;
     player.start = false;
-    player.step = 5;
+    player.step = player.baseSpeed;
     player.speedMultiplier = 1;
     playerIsInvincible = false;
     isSpeedBoostActive = false;
@@ -188,15 +190,6 @@ function resetGameState() {
     // Remove any existing power-ups from the road
     const powerUps = document.querySelectorAll('.power-up');
     powerUps.forEach(powerUp => powerUp.remove());
-    if (backgroundMusic && isMusicPlaying) {
-        backgroundMusic.pause();
-        backgroundMusic.currentTime = 0;
-        if (isMusicPlaying) {
-            backgroundMusic.play().catch(error => {
-                console.log('Audio playback failed:', error);
-            });
-        }
-    }
 }
 
 
@@ -230,6 +223,7 @@ function playArea() {
 
 function init() {
     player.start = true;
+    player.step = player.baseSpeed;
     window.requestAnimationFrame(playArea);
 
     // Create road lines
@@ -330,6 +324,7 @@ function isColliding(element1, element2) {
 
 function activatePowerUp(type) {
     const playerCar = document.querySelector('.car');
+    const currentTime = Date.now();
     
     if (type === powerUps.SHIELD) {
         playerIsInvincible = true;
@@ -340,12 +335,30 @@ function activatePowerUp(type) {
         }, powerUpDuration);
     } 
     else if (type === powerUps.SPEED_BOOST) {
-        player.step *= 1.5;
-        playerCar.classList.add('speed-active');
-        setTimeout(() => {
-            player.step /= 1.5;
-            playerCar.classList.remove('speed-active');
-        }, powerUpDuration);
+        // If speed boost is already active, extend the duration
+        if (isSpeedBoostActive) {
+            player.speedBoostEndTime = Math.max(player.speedBoostEndTime, currentTime + powerUpDuration);
+        } else {
+            // First speed boost activation
+            isSpeedBoostActive = true;
+            player.step = player.baseSpeed * 1.5;
+            player.speedBoostEndTime = currentTime + powerUpDuration;
+            playerCar.classList.add('speed-active');
+        }
+
+        // Check for speed boost end
+        const checkSpeedBoostEnd = () => {
+            if (currentTime >= player.speedBoostEndTime) {
+                isSpeedBoostActive = false;
+                player.step = player.baseSpeed;
+                playerCar.classList.remove('speed-active');
+            } else if (isSpeedBoostActive) {
+                // Continue checking if still active
+                requestAnimationFrame(checkSpeedBoostEnd);
+            }
+        };
+        
+        requestAnimationFrame(checkSpeedBoostEnd);
     }
 }
 
