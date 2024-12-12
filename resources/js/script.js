@@ -1,4 +1,4 @@
-import { initializeClerk, updateClerkAppearance } from './clerk.js';
+import { initializeClerk, updateClerkAppearance } from '/resources/js/clerk.js';
 
 // Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
