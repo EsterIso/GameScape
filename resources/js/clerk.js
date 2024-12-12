@@ -156,7 +156,7 @@ async function initializeClerk() {
                     const newSignInButton = document.getElementById('sign-in-button');
                     newSignInButton.addEventListener('click', () => {
                         storeReturnUrl();
-                        window.location.href = '/signin';
+                        window.location.href = '/signin.html';
                     });
                 }
                 if (userButton) {
