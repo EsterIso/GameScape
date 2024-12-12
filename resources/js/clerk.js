@@ -1,3 +1,19 @@
+//clerk.js 
+import { db } from './firebase-config.js';
+import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+
+let clerkLoaded = false;
+let clerkLoadedCallbacks = [];
+
+function onClerkLoaded(callback) {
+    if (clerkLoaded) {
+        callback();
+    } else {
+        clerkLoadedCallbacks.push(callback);
+    }
+}
+
+
 // Helper function to get current page
 function getCurrentPage() {
   const path = window.location.pathname;
@@ -91,26 +107,44 @@ function updateClerkAppearance() {
 
 // Initialize Clerk authentication
 async function initializeClerk() {
-  try {
-      const currentPage = getCurrentPage();
-      const signInContainer = document.getElementById('sign-in-container');
-      const signInButton = document.getElementById('sign-in-button');
-      const userButton = document.getElementById('user-button');
-      
-      // Wait for Clerk to be available
-      if (typeof Clerk === 'undefined') {
-          console.warn('Clerk not loaded yet, waiting...');
-          return;
-      }
+    try {
+        const currentPage = getCurrentPage();
+        const signInContainer = document.getElementById('sign-in-container');
+        const signInButton = document.getElementById('sign-in-button');
+        const userButton = document.getElementById('user-button');
+        
+        // Wait for Clerk to be available
+        if (typeof Clerk === 'undefined') {
+            console.warn('Clerk not loaded yet, waiting...');
+            return;
+        }
 
-      await Clerk.load();
+        await Clerk.load();
+        clerkLoaded = true;
+        clerkLoadedCallbacks.forEach(callback => callback());
+        clerkLoadedCallbacks = [];
 
-      // Add sign-out listener - Only redirect if user signs out manually
-      Clerk.addListener(({ user }) => {
-          if (!user && currentPage !== 'index' && currentPage !== 'signin' && Clerk.lastSignOutAt) {
-              window.location.href = '/index.html';
-          }
-      });
+    // Add sign-out listener - Only redirect if user signs out manually
+    Clerk.addListener(async ({ user, type }) => {
+        if (user && type === 'signed_in') {
+            console.log('User signed in via Clerk:', user.id);
+            // Call Firebase tracking if available
+            if (typeof window.trackNewPlayer === 'function') {
+                const playerRef = doc(db, 'players', user.id);
+                const playerDoc = await getDoc(playerRef);
+                
+                if (!playerDoc.exists()) {
+                    console.log('Creating new player document');
+                    await trackNewPlayer(user);
+                } else {
+                    console.log('Player document already exists');
+                    await updatePlayerActivity(user.id);
+                }
+            }
+        } else if (!user && currentPage !== 'index' && currentPage !== 'signin' && Clerk.lastSignOutAt) {
+            window.location.href = '/index.html';
+        }
+    });
 
       const isDarkMode = document.body.classList.contains('dark-mode');
 
@@ -166,5 +200,6 @@ async function initializeClerk() {
 // Export functions for use in main script
 export {
   initializeClerk,
-  updateClerkAppearance
+  updateClerkAppearance,
+  onClerkLoaded
 };

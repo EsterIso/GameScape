@@ -1,3 +1,61 @@
+//racing.js
+
+function waitForClerk() {
+    return new Promise((resolve) => {
+        if (typeof Clerk !== 'undefined' && Clerk.loaded) {
+            resolve();
+        } else {
+            document.addEventListener('clerk-ready', () => resolve());
+        }
+    });
+}
+
+// Use this instead of the current DOMContentLoaded listener
+document.addEventListener('DOMContentLoaded', async () => {
+    await waitForClerk();
+    console.log('Racing game loaded, Clerk status:', typeof Clerk !== 'undefined' ? 'available' : 'not available');
+    console.log('Clerk user:', Clerk?.user);
+    
+    if (Clerk.user && window.trackGameStart) {
+        console.log('Starting game session for user:', Clerk.user.id);
+        try {
+            await window.trackGameStart('racing', Clerk.user.id);
+            console.log('Game session started successfully');
+        } catch (error) {
+            console.error('Error starting game session:', error);
+        }
+    }
+});
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('Racing game loaded, Clerk status:', typeof Clerk !== 'undefined' ? 'available' : 'not available');
+    console.log('Clerk user:', Clerk?.user);
+    console.log('trackGameStart function:', typeof window.trackGameStart);
+    
+    if (typeof Clerk !== 'undefined' && Clerk.user && window.trackGameStart) {
+        console.log('Starting game session for user:', Clerk.user.id);
+        try {
+            await window.trackGameStart('racing', Clerk.user.id);
+            console.log('Game session started successfully');
+        } catch (error) {
+            console.error('Error starting game session:', error);
+        }
+    }
+});
+
+window.addEventListener('beforeunload', async () => {
+    console.log('Page unloading, Clerk status:', typeof Clerk !== 'undefined' ? 'available' : 'not available');
+    console.log('Clerk user:', Clerk?.user);
+    console.log('trackGameEnd function:', typeof window.trackGameEnd);
+    
+    if (typeof Clerk !== 'undefined' && Clerk.user && window.trackGameEnd) {
+        try {
+            await window.trackGameEnd('racing', Clerk.user.id);
+            console.log('Game session ended successfully');
+        } catch (error) {
+            console.error('Error ending game session:', error);
+        }
+    }
+});
 const roadArea = document.querySelector('.road');
 let player = { 
     step: 5,
