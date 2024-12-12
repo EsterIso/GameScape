@@ -32,7 +32,7 @@ async function trackNewPlayer(user) {
       lastActive: serverTimestamp(),
       totalGamesPlayed: 0
     }, { merge: true });
-    console.log('Successfully tracked new player:', user.id);
+    // console.log('Successfully tracked new player:', user.id);
   } catch (error) {
     console.error('Error tracking new player:', error);
   }
@@ -121,7 +121,7 @@ function initializeDashboardStats() {
                          window.location.pathname === '/index.html';
 
   if (!isMainDashboard) {
-    console.log('Not on dashboard page, skipping stats initialization');
+    // console.log('Not on dashboard page, skipping stats initialization');
     return;
   }
 
@@ -173,7 +173,7 @@ function initializeDashboardStats() {
 // Initialize everything and set up Clerk listeners
 // Initialize everything and set up Clerk listeners
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Starting Firebase initialization...');
+  // console.log('Starting Firebase initialization...');
   
   // Initialize dashboard stats
   initializeDashboardStats();
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Clerk is now available, setting up auth listener...');
       
       Clerk.addListener(async ({ user, type }) => {
-          console.log('Clerk auth event:', type, user?.id);
+          // console.log('Clerk auth event:', type, user?.id);
           
           if (user) {
               try {
@@ -202,9 +202,9 @@ document.addEventListener('DOMContentLoaded', () => {
                           lastActive: serverTimestamp(),
                           totalGamesPlayed: 0
                       });
-                      console.log('Player document created successfully');
+                      // console.log('Player document created successfully');
                   } else {
-                      console.log('Updating existing player activity');
+                      // console.log('Updating existing player activity');
                       await updateDoc(playerRef, {
                           lastActive: serverTimestamp()
                       });
