@@ -24,25 +24,23 @@ function getCurrentPage() {
 
 // Helper function to get base URL
 function getBaseUrl() {
-  const path = window.location.pathname;
-  const baseUrl = path.includes('/games/') ? '../' : './';
-  return baseUrl;
+
+  return '/';
 }
 
 // Helper function to store and get return URL
 function storeReturnUrl() {
-  // Store the full URL including pathname, search params, and hash
-  const returnUrl = window.location.pathname + window.location.search + window.location.hash;
-  if (!returnUrl.includes('signin.html')) {
-      localStorage.setItem('returnUrl', returnUrl);
-      console.log('Stored return URL:', returnUrl); // Debug log
-  }
+    const returnUrl = window.location.pathname;
+    if (!returnUrl.includes('signin.html')) {  // Changed from 'signin' to 'signin.html'
+        localStorage.setItem('returnUrl', returnUrl);
+        console.log('Stored return URL:', returnUrl);
+    }
 }
 
 function getReturnUrl() {
-  const returnUrl = localStorage.getItem('returnUrl');
-  console.log('Retrieved return URL:', returnUrl); // Debug log
-  return returnUrl || '/index.html';
+    const returnUrl = localStorage.getItem('returnUrl');
+    console.log('Retrieved return URL:', returnUrl);
+    return returnUrl || '/';
 }
 
 // Function to get clerk appearance based on theme
@@ -118,84 +116,58 @@ async function initializeClerk() {
             console.warn('Clerk not loaded yet, waiting...');
             return;
         }
-
+  
         await Clerk.load();
-        clerkLoaded = true;
-        clerkLoadedCallbacks.forEach(callback => callback());
-        clerkLoadedCallbacks = [];
-
-    // Add sign-out listener - Only redirect if user signs out manually
-    Clerk.addListener(async ({ user, type }) => {
-        if (user && type === 'signed_in') {
-            console.log('User signed in via Clerk:', user.id);
-            // Call Firebase tracking if available
-            if (typeof window.trackNewPlayer === 'function') {
-                const playerRef = doc(db, 'players', user.id);
-                const playerDoc = await getDoc(playerRef);
-                
-                if (!playerDoc.exists()) {
-                    console.log('Creating new player document');
-                    await trackNewPlayer(user);
-                } else {
-                    console.log('Player document already exists');
-                    await updatePlayerActivity(user.id);
+  
+        // Add sign-out listener
+        Clerk.addListener(({ user }) => {
+            if (!user && currentPage !== 'index' && currentPage !== 'signin' && Clerk.lastSignOutAt) {
+                window.location.href = '/';
+            }
+        });
+  
+        const isDarkMode = document.body.classList.contains('dark-mode');
+  
+        if (currentPage === 'signin' && signInContainer) {
+            Clerk.mountSignIn(signInContainer, {
+                afterSignIn: (result) => {
+                    const returnUrl = getReturnUrl();
+                    localStorage.removeItem('returnUrl');
+                    window.location.href = returnUrl;
+                },
+                signUpUrl: '/signin.html',
+                appearance: getClerkAppearance(isDarkMode),
+            });
+        } else {
+            if (Clerk.user) {
+                if (userButton) {
+                    Clerk.mountUserButton(userButton, {
+                        afterSignOutUrl: '/',
+                        appearance: getClerkAppearance(isDarkMode),
+                    });
+                }
+                if (signInButton) {
+                    signInButton.style.display = 'none';
+                }
+            } else {
+                if (signInButton) {
+                    signInButton.style.display = 'block';
+                    signInButton.replaceWith(signInButton.cloneNode(true));
+                    const newSignInButton = document.getElementById('sign-in-button');
+                    newSignInButton.addEventListener('click', () => {
+                        storeReturnUrl();
+                        window.location.href = '/signin';
+                    });
+                }
+                if (userButton) {
+                    userButton.style.display = 'none';
                 }
             }
-        } else if (!user && currentPage !== 'index' && currentPage !== 'signin' && Clerk.lastSignOutAt) {
-            window.location.href = '/index.html';
         }
-    });
-
-      const isDarkMode = document.body.classList.contains('dark-mode');
-
-      if (currentPage === 'signin' && signInContainer) {
-          // Mount sign-in component on sign-in page
-          Clerk.mountSignIn(signInContainer, {
-              afterSignIn: (result) => {
-                  // Get return URL before clearing it
-                  const returnUrl = getReturnUrl();
-                  localStorage.removeItem('returnUrl'); // Clear stored URL
-                  console.log('Redirecting to:', returnUrl); // Debug log
-                  window.location.href = returnUrl;
-              },
-              signUpUrl: '/signin.html?mode=sign-up',
-              appearance: getClerkAppearance(isDarkMode),
-          });
-      } else {
-          // Handle authentication state on main page
-          if (Clerk.user) {
-              if (userButton) {
-                  Clerk.mountUserButton(userButton, {
-                      afterSignOutUrl: '/index.html',
-                      appearance: getClerkAppearance(isDarkMode),
-                  });
-              }
-              if (signInButton) {
-                  signInButton.style.display = 'none';
-              }
-          } else {
-              if (signInButton) {
-                  signInButton.style.display = 'block';
-                  // Remove any existing click listeners
-                  signInButton.replaceWith(signInButton.cloneNode(true));
-                  // Re-get the button after replacing
-                  const newSignInButton = document.getElementById('sign-in-button');
-                  // Add new click listener
-                  newSignInButton.addEventListener('click', () => {
-                      storeReturnUrl();
-                      const baseUrl = getBaseUrl();
-                      window.location.href = `${baseUrl}signin.html`;
-                  });
-              }
-              if (userButton) {
-                  userButton.style.display = 'none';
-              }
-          }
-      }
-  } catch (error) {
-      console.error('Error initializing Clerk:', error);
+    } catch (error) {
+        console.error('Error initializing Clerk:', error);
+    }
   }
-}
 
 // Export functions for use in main script
 export {
