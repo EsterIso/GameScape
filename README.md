@@ -41,7 +41,7 @@ GameScape is an innovative web-based gaming platform that brings together casual
 * Personalized user experiences
 * Game preview system
 
-##🙏 Acknowledgments
+## 🙏 Acknowledgments
 
 Visual Programming course instructors and peers for guidance and feedback
 Open-source community for various tools and libraries used
